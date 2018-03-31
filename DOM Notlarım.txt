@@ -1,0 +1,678 @@
+Internet Explorer 9+, Firefox 42.0, Yandex 15.10, Chrome 46.0, Opera 33.0, Safari 5.1.7
+
+DOM Nedir?
+Açýlým olarak Document Object Model, Türkçesi Döküman Nesne Modeli. Herhangi bir programlama dili veya script ile bir dökümana dinamik olarak eriþmeyi 
+ve bu dökümanýn içeriðini, yapýsýný, stilini dinamik olarak deðiþtirmeyi saðlayan bir yapýdýr.
+
+#Ýnternet tarayýcýlarý girilen internet sayfasýný bir belge, bu belge(sayfa) içinde bulunan tüm elemanlarý da birer nesne olarak kabul eder. Buna göre 
+resim, yazý, form gibi tüm elemanlar nesnedir. Ýþte DOM sayfa içindeki herhangi bir nesnenin özelliðine müdahele edebilmemize olanak saðlar. Bunu yapabilmek 
+için de JavaScript gibi bazý script dilleri kullanmak gerekir.
+#Üç adet DOM Modeli bulunmaktadýr:
+HTML DOM => HTML dökümanlarý için tasarlanmýþ DOM Modeli.
+XML DOM => XML dökümanlarý için tasarlanmýþ DOM Modeli.
+Core DOM => Herhangi yapýsal bir dökümana eriþim saðlar.
+
+<--------------------------------------------HTML DOM-------------------------------------------->
+
+(Navigator)
+window.navigator.userAgent => Browser hakkýnda birtakým bilgiler verir.
+window.navigator.onLine => Að kablosu takýlý ise true, deðilse false döner.
+window.navigator.language => Browser'in dilini verir.(IE 11+)
+(
+	#Internet Explorer'in eski sürümleri için window.navigator.browserLanguage kullanýlýr.
+	#Internet Explorer ve Edge tarayýcýlarýnýn dili iþletim sisteminin diline baðlýdýr. Ýþletim sisteminin dili deðiþtirildiðinde
+	otomatik olarak browser'in dili de deðiþir. Dolayýsýyla browser'in diline bakarak iþletim sisteminin dilini de öðrenmiþ oluruz.
+)
+window.navigator.cookieEnabled => Tarayýcýnýn çerezleri kabul edip etmediði bool türünde döner.(Edge ve Internet Explorer'da test edilecek)
+window.navigator.plugins => Browser'da kurulu eklentilerin bir listesini verir.
+(
+	#.name => Eklenti adý
+	.length => Eklenti boyutu
+	.filename => Dosya adý
+	.description => Eklenti açýklamasý
+	#Eklenti sayýsýný öðrenmek için "window.navigator.plugins.length" kullanýlabilir.
+
+	#ÖR:
+	for(var i=0;i<window.navigator.plugins.length;i++){
+		document.write("Plugin Adý:"+window.navigator.plugins[i].name+"<br />Boyut:"+window.navigator.plugins[i].length+"<br />Dosya Adý:"+window.navigator.plugins[i].filename+"<br />Açýklama:"+window.navigator.plugins[i].description+"<br />");
+	}
+)
+window.navigator.mimeTypes => http://www.mynotlar.com/html_dom/window/navigator/mimetypes.aspx
+window.navigator.javaEnabled() => Tarayýcýda Java'nýn aktif olup olmadýðýný bool türünde döndürür. (Test edilecek)
+
+
+
+
+
+(Screen)
+window.screen.width => Ekranýn geniþliðini verir.
+window.screen.height => Ekranýn yüksekliðini verir.
+window.screen.availWidth => Ekranýn kullanýlabilir geniþliðini verir.
+window.screen.availHeight => Ekranýn kullanýlabilir yüksekliðini verir.
+(
+	#ÖR:
+	//Ekran çözünürlüðüm : 1366x768
+	document.write("Ekran Geniþliði: "+window.screen.width+"<br>"); //1366
+	document.write("Ekran Yüksekliði: "+window.screen.height+"<br>"); //768
+	document.write("Kullanýlabilir Geniþlik: "+window.screen.availWidth+"<br>"); //1366
+	document.write("Kullanýlabilir Yükseklik: "+window.screen.availHeight+"<br>"); //728 NOT:Baþlat çubuðu gizlenirse 768 deðeri alýnýr.
+)
+%window.screen.colorDepth
+%window.screen.pixelDepth
+
+
+
+
+
+(Location)
+window.location.toString() => Protokol + Yol adý
+window.location.href => Protokol + Yol adý
+(
+	#ÖR:
+	document.write(window.location.toString()+"<br>"); // http://www.erensati.com/index.html?isim=eren
+	document.write(window.location.href+"<br>"); // http://www.erensati.com/index.html?isim=eren
+	
+	#window.location.href='web adresi'; þeklinde bir kullanýmý da vardýr. Baþka bir sayfaya gitmek için kullanýlýr. 
+)
+window.location.protocol => Protokol.
+(
+	#ÖR:
+	document.write(window.location.protocol); // http:
+)
+window.location.pathname
+(
+	#ÖR:
+	document.write(window.location.pathname); // /index.html !Dikkat URL Adresi : http://www.erensati.com/index.html?isim=eren => sadece sayfa adýný verir.
+)
+window.location.reload() => Sayfanýn refresh edilmesini saðlar.
+window.location.replace("adres") => Parametre olarak verilen adrese gider. Bu iþlemden sonra geri tuþu çalýþmaz. (IE ve Edge'de geri tuþu çalýþýr)
+window.location.search => URL Adresinin ? iþaretinden sonraki kýsmýný verir. QueryString deðerlerine eriþmek için kullanýlabilir.
+(
+	#ÖR:
+	document.write(window.location.search); // ?isim=eren !Dikkat URL Adresi : http://www.erensati.com/index.html?isim=eren
+)
+window.location.hash => URL Adresinin # iþaretinden sonraki kýsmýný verir. # iþaretinden sonraki deðerler sayfayý yenilemez. 
+(
+	#ÖR:
+	document.write(window.location.hash); // #isim=eren !Dikkat URL Adresi : http://www.erensati.com/index.html#isim=eren
+)
+window.location.host
+window.location.hostname
+(
+	#ÖR:
+	document.write(window.location.host+"<br />"); // www.erensati.com !Dikkat URL Adresi : http://www.erensati.com/index.html?isim=eren => Alan adýný verir.
+	document.write(window.location.hostname+"<br />"); // www.erensati.com !Dikkat URL Adresi : http://www.erensati.com/index.html?isim=eren => Alan adýný verir.
+)
+
+
+
+
+
+(Window)
+window.alert()
+(
+	#genelde "alert()" þeklinde kullanýlýr.
+	#ÖR:
+	alert("Hello World!"); //Hello World!
+)
+window.close() => Tarayýcý sekmesinin kapatýlmasýný saðlar.(Firefox, Chrome, Opera ve Yandex desteklemez. IE ve Edge tarayýcýlarý sekmenin kapatýlmasý için kullanýcý onayý ister)
+window.confirm() => Ýki seçenekli mesaj kutusu çýkarmak için kullanýlýr. NOT : Mesaj kutusunun baþlýðý, butonlarýn yazýsý ve yerleri ile yazdýðýmýz mesaj'ýn konumuna müdahale etme imkanýmýz yok.
+(
+	#ÖR:
+	var sonuc=window.confirm('Çýkýþ yapýlsýn mý?'); //Mesaj kutusu gösterilir.
+	document.write(sonuc); //kullanýcýnýn seçimine göre "true" ya da "false" yazýlýr. Kullanýcý diyalog kutusunu X ile kapatýrsa false deðeri döner.
+)
+window.print() => Web sayfasýnýn çýktýsýný almak için kullanýlýr.
+(
+	#ÖR:
+	window.print(); //Yazdýrma penceresi açýlýr.	
+)
+window.innerWidth => Sayfanýn geniþliðini verir(IE 9+)
+window.innerHeight => Sayfanýn yüksekliðini verir(IE 9+)
+(
+	#ÖR:
+	//Tarayýcý penceresinin boyutundaki deðiþmeler innerWidth ve innerHeight özelliklerini etkiler.
+	document.write(window.innerWidth+"<br>"); 
+	document.write(window.innerHeight+"<br>");
+)
+window.outerWidth => Tarayýcý penceresinin kapladýðý alanýn geniþliðini verir.
+window.outerHeight => Tarayýcý penceresinin kapladýðý alanýn yüksekliðini verir.
+window.screenX => Browser'in sol kenarýyla ekranýn sol kenarý arasýndaki mesafeyi verir.(IE 9+)
+window.screenY => Browser'in üst kenarýyla ekranýn üst kenarý arasýndaki mesafeyi verir.(IE 9+)
+window.scroll(sol,üst) => Tarayýcýnýn kaydýrma çubuklarýnýn soldan ve üstten uzaklýðýný ayarlamak için kullanýlýr.
+window.scrollBy(sol,üst) => Kaydýrma çubuklarýnýn soldan ve üstten uzaklýðýna ekleme-çýkarma yapmak için kullanýlýr.
+window.length => Sayfadaki iframe sayýsýný verir.
+window.getSelection() => Kullanýcý tarafýndan sayfada seçilen metni verir.
+window.XMLHttpRequest => Tarayýcýnýn XMLHttpRequest nesnesini destekleyip desteklemediðini öðrenmek için kullanýlýr. Desteklemiyor ise "undefined".
+window.ActiveXObject => Tarayýcýnýn ActiveXObject desteði olup olmadýðýný öðrenmek için kullanýlýr. Desteklemiyor ise "undefined"(Sadece IE, Edge'de çalýþmaz).
+window.DOMParser => Tarayýcýnýn DOMParser nesnesini destekleyip desteklemediðini öðrenmek için kullanýlýr. Desteklemiyor ise "undefined"(IE 9+).
+window.XMLSerializer => Tarayýcýnýn XMLSerializer desteði olup olmadýðýný öðrenmek için kullanýlýr. Desteklemiyor ise "undefined"(IE 9+).
+window.setTimeout() => Belirtilen bir fonksiyonun veya kodun belirtilen süre sonunda bir kere çalýþtýrýlmasýný saðlar.
+(
+	#http://www.mynotlar.com/html_dom/window/settimeout.aspx
+)
+window.clearTimeout() => setTimeout metodu ile ayarlanmýþ zamanlama iþlemini iptal eder. Ýptal iþlemi için setTimeout ile zamanlayýcý kurulduðunda alýnan zamanlama kimlik numarasýnýn clearTimeout metoduna parametre olarak aktarýlmasý gerekir.
+(
+	#http://www.mynotlar.com/html_dom/window/cleartimeout.aspx
+)
+window.setInterval() => Belirtilen bir fonksiyonun veya kodun belli zaman aralýklarýyla tekrar tekrar çalýþtýrýlmasýný saðlar. 
+(
+	#http://www.mynotlar.com/html_dom/window/setinterval.aspx
+)
+window.clearInterval() => setInterval metodu ile ayarlanmýþ tekrarlama iþlemini iptal eder. Ýptal iþleminin uygulanmasý için setInterval metodu kurulduðunda alýnan kimlik kodunun, clearInterval metoduna parametre olarak verilmesi gerekir.
+(
+	#http://www.mynotlar.com/html_dom/window/clearinterval.aspx
+)
+
+
+
+
+
+(Document)
+document.write()
+document.writeln()
+document.title => Sayfa baþlýðýný almak ya da deðiþtirmek için kullanýlýr. Deðiþiklik "document.title='yeni baþlýk';" þeklinde yapýlýr.
+document.domain => Domain(alan adý) adresini verir.
+(
+	#ÖR:
+	document.write(document.domain); //www.erensati.com !Dikkat URL Adresi : http://www.erensati.com/index.html?isim=eren
+)
+document.documentElement => Kök elementi verir. HTML sayfalarýnýn kök elementi <html></html> etiketidir.
+(
+	#ÖR:
+	document.write(document.documentElement); //[object HTMLHtmlElement]
+)
+document.characterSet => Sayfanýn karakter setini verir(IE 9+).
+document.getSelection() => Sayfada seçili olan yazýyý verir(IE 9+).
+document.getElementById("id") => Belirtilen id'li nesnenin referansýnýn alýnmasýný saðlar. Ayný id'ye sahip birden fazla eleman varsa ilk elemanýn referansý alýnýr. id'si verilen eleman yoksa geriye null döner.
+document.getElementsByTagName("tag") => Belirtilen etiket ismine ait bütün elementlerin referansýnýn alýnmasýný saðlar.
+(
+	document.getElementsByTagName("div")[0].innerHTML="Hi Guys!"; //Ýlk div elementinin içine "Hi Guys!" yazýlýr.
+)
+document.createElement("elementAdi") => HTML elementi oluþturmak için kullanýlýr. Oluþturulan element appendChild veya insertBefore fonksiyonlarýndan biri ile dökümana eklenir.
+(
+	#Detaylý bilgi için : http://www.mynotlar.com/html_dom/document/createelement.aspx
+)
+document.createTextNode("Text") => Metin düðümü oluþturmak için kullanýlýr. Oluþturulan düðüm appendChild fonksiyonu ile dökümana eklenebilir.
+document.createAttribute("özellik") => Özellik oluþturmak için kullanýlýr.
+(
+	#Detaylý bilgi için : http://www.mynotlar.com/html_dom/document/createattribute.aspx
+	#ÖR:
+	<body>
+	<img id="resim1" src="kalem.jpg" />
+	<script>
+		var ozellik=document.createAttribute("width");
+		var ozellik2=document.createAttribute("height");
+		ozellik.nodeValue="300";
+		ozellik2.nodeValue="50";
+		document.getElementById("resim1").setAttributeNode(ozellik);
+		document.getElementById("resim1").setAttributeNode(ozellik2);
+	</script>
+	</body>
+)
+document.body => Body nesnesine eriþmek için kullanýlýr.
+(
+	#ÖR:
+	<script type="text/javascript">
+	alert(document.body.nodeName); //BODY
+	</script>
+)
+document.images => Dökümandaki resimlerin listesini döndürür.
+document.forms => Dökümandaki formlarýn listesini döndürür.
+document.links => Dökümandaki linklerin listesini döndürür.
+document.anchors => name özelliði olan linklerin listesini döndürür.
+document.hasFocus() => Döküman aktifse true, deðilse false döndürür.
+(
+	#ÖR:
+	document.write(document.hasFocus()); //true
+)
+document.lastModified => Sayfanýn son güncellenme tarihini verir.
+%document.getElementsByName()
+
+
+
+
+
+(Event)
+event.clientX => Farenin sayfadaki x kordinatýný verir. Fare sayfanýn en solunda iken bu deðer 0'dýr.
+event.clientY => Farenin sayfadaki y kordinatýný verir. Fare sayfanýn en üstünde iken bu deðer 0'dýr.
+(
+	#ÖR:
+	function fonksiyon1(){
+		document.getElementById("ornekDiv").innerHTML=event.clientX+"-"+event.clientY;
+	}
+	document.onmousemove=fonksiyon1;
+
+	#clientX ve clientY özelliklerinin firefox tarayýcýsýnda kullanýmý biraz farklýdýr. Aþaðýdaki kod diðer tarayýcýlarda da sorunsuz olarak çalýþýr:
+	function fonksiyon1(olay){
+		asd = olay || event;
+		document.getElementById("ornekDiv").innerHTML=asd.clientX+"-"+asd.clientY;
+	}
+	document.onmousemove=fonksiyon1;
+)
+event.pageX => Farenin dökümandaki x kordinatýný verir.
+event.pageY => Farenin dökümandaki y kordinatýný verir.
+event.screenX => Farenin ekrandaki x kordinatýný verir.
+event.screenY => Farenin ekrandaki y kordinatýný verir.
+(
+	#ÖR:
+	function fonksiyon1(){
+		document.getElementById("ornekDiv").innerHTML=event.screenX+"-"+event.screenY;
+	}
+	document.onmousemove=fonksiyon1;
+	
+	#screenX ve screenY özelliklerinin firefox tarayýcýsýnda kullanýmý biraz farklýdýr. Aþaðýdaki kod diðer tarayýcýlarda da sorunsuz olarak çalýþýr:
+	function fonksiyon1(olay){
+		asd = olay || event;
+		document.getElementById("ornekDiv").innerHTML=asd.screenX+"-"+asd.screenY;
+	}
+	document.onmousemove=fonksiyon1;
+)
+event.offsetX => Farenin gezdiði katmandaki x kordinatýný verir.
+event.offsetY => Farenin gezdiði katmandaki y kordinatýný verir.
+(
+	#ÖR:
+	function fonksiyon1(){
+		document.getElementById("ornekDiv").innerHTML=event.offsetX+"-"+event.offsetY;
+	}
+	document.onmousemove=fonksiyon1;
+	
+	#offsetX ve offsetY özelliklerinin firefox tarayýcýsýnda kullanýmý biraz farklýdýr. Aþaðýdaki kod diðer tarayýcýlarda da sorunsuz olarak çalýþýr:
+	function fonksiyon1(olay){
+		asd = olay || event;
+		document.getElementById("ornekDiv").innerHTML=asd.offsetX+"-"+asd.offsetY;
+	}
+	document.onmousemove=fonksiyon1;
+)
+event.keyCode => Klavyeden basýlan tuþun ASCII karþýlýðýný verir.
+(
+	#ÖR:
+	function fonksiyon1(ol){
+		olay= ol || event;
+		document.getElementById("ornekDiv").innerHTML=olay.keyCode;
+	}
+	document.onkeydown=fonksiyon1;
+)
+event.which => event.keyCode ile ayný iþlemi yapar.
+event.charCode => keypress olayý ile çalýþýr. Klavyeden basýlan tuþun ASCII kodunu verir.
+(
+	#event.keyCode'dan farký büyük küçük harf ayrýmý yapmasýdýr. Örneðin : CAPS LOCK açýkken A'ya basýldýðýnda 65, kapalýyken basýldýðýnda 97 deðerini döndürür.
+)
+event.type => Olayýn tipini baþýnda on eki olmadan verir.
+event.currentTarget => Olayýn gerçekleþtiði elemaný referans alýr. Bu sayede bu elemanýn id, name gibi özelliklerini alabiliriz.
+event.target => event.currentTarget ile ayný iþlemi yapar.
+event.altKey => Klavyeden alt tuþuna basýlmýþsa true aksi durumda false döner.
+event.ctrlKey => Klavyeden ctrl tuþuna basýlmýþsa true aksi durumda false döner.
+event.shiftKey => Klavyeden shift tuþuna basýlmýþsa true aksi durumda false döner.
+
+
+
+
+
+(Element)
+.tagName => Elementin adýný verir.
+.nodeName => Düðümün adý
+.nodeValue => Düðümün deðeri
+.nodeType => Düðümün tipi
+(
+	#1 : ELEMENT_NODE, 2 : ATTRIBUTE_NODE, 3 : TEXT_NODE, 4 : CDATA_SECTION_NODE, 5 : ENTITY_REFERENCE_NODE,  6 : ENTITY_NODE, 7 : PROCESSING_INSTRUCTION_NODE,
+	 8 : COMMENT_NODE, 9 : DOCUMENT_NODE, 10 : DOCUMENT_TYPE_NODE, 11 : DOCUMENT_FRAGMENT_NODE, 12 : NOTATION_NODE
+)
+.parentElement => Elementin baðlý olduðu üst elementin referansýný verir.
+.parentNode => Bir üst node.
+.innerHTML => Elementin içeriðini almak ya da deðiþtirmek için kullanýlýr. NOT : Ýçerik HTML kodlarý ile birlikte alýnýr.
+(
+	#ÖR:
+	document.getElementById("ornekDiv").innerHTML="Hello World!"; //içerik "Hello World!" yapýlýr.
+	document.getElementById("ornekDiv").innerHTML+="Hi Guys!"; //içeriðe "Hi Guys!" eklenir.
+
+	ÖR 2:
+	<script>
+	function f1(){
+		document.getElementById("ornekDiv").innerHTML="<p><b>Özkütle</b> birim hacmin kütlesidir.</p>";
+		alert(document.getElementById("ornekDiv").innerHTML); //<p><b>Özkütle</b> birim hacmin kütlesidir.</p>
+	}
+	</script>
+	<div id="ornekDiv"></div><br />
+	<input type="button" value="Týkla" onclick="f1()" />
+)
+.getElementsByTagName("tag")
+(
+	#ÖR:
+	alert(document.getElementById("ornekDiv").getElementsByTagName("div")[1].innerHTML); //ornekDiv id'li divin altýndaki divlerden ikincisinin içeriði mesaj penceresi ile gösterilir.
+)
+.focus() => Nesneye odaklanýlmasýný saðlar.
+.blur() => Nesnenin focus özelliðinin kaldýrýlmasýný saðlar.
+.click() => Elemente programsal olarak týklamak için kullanýlýr.
+.setAttribute("özellik", "deger") => Elemente özellik eklemek için kullanýlýr. Zaten varolan bir özellik eklenmek istenirse mevcut özelliðin deðeri deðiþir.
+(
+	#Internet Explorer'in 7 ve önceki sürümlerinde style özelliði eklenirken sorunlar yaþanmakta. Eski sürümlerde aþaðýdaki kod kullanýlabilir.
+	ÖR: 
+	document.getElementById("ornekDiv").style.backgroundColor="red";
+	
+	#Bu fonksiyon ile elemente olay da eklenebilir. NOT : setAttribute fonksiyonu ile eklenen olay IE 7 ve alt sürümlerde çalýþmaz. 
+	ÖR:
+	document.getElementById("ornekDiv").setAttribute("onclick","alert('Hello World!');");
+)
+.getAttribute("özellik") => Elementin belirtilen özelliðinin deðerini verir. Özellik yoksa "null" deðer dönecektir.
+.removeAttribute("özellik") => Elementin belirtilen özelliðini silmek için kullanýlýr.
+.attributes => Elementin özelliklerini getirir.(IE 8+)
+(
+	#ÖR:
+	<script>
+	function fonksiyon1(){
+	alert(document.getElementById("ornekDiv").attributes.length); //3
+	alert(document.getElementById("ornekDiv").attributes[1].nodeType); //2
+	alert(document.getElementById("ornekDiv").attributes[0].nodeName); //id
+	alert(document.getElementById("ornekDiv").attributes[0].nodeValue);  //ornekDiv
+	}
+	</script>
+	<div id="ornekDiv" style="width:400px; height:200px; border:1px solid black;" onclick="fonksiyon1()"></div>
+)
+.hasAttribute("özellik") => Element belirtilen özelliðe sahipse true, deðilse false döner(IE 8+).
+.hasAttributes() => Element bir özelliðe sahipse true, deðilse false döner(IE 8+).
+.hasChildNodes() => Element bir alt düðüme sahipse true, deðilse false döner. NOT: Elementin içinde element veya text varsa true, elementin içi boþsa false dönecektir.
+.getAttributeNode()
+.setAttributeNode()
+(
+	#ÖR:
+	<img id="resim1" src="kalem.jpg" />
+	<script>
+		var ozellik=document.createAttribute("width");
+		var ozellik2=document.createAttribute("height");
+		ozellik.nodeValue="300";
+		ozellik2.nodeValue="50";
+		document.getElementById("resim1").setAttributeNode(ozellik);
+		document.getElementById("resim1").setAttributeNode(ozellik2);
+		alert(document.getElementById("resim1").getAttributeNode("width")); //[object Attr] NOT : Resmin width özelliði olmasaydý null deðeri dönerdi.
+		alert(document.getElementById("resim1").getAttributeNode("width").nodeValue); //300
+	</script>
+)
+.removeAttributeNode()
+(
+	#ÖR:
+	<img id="resim1" src="kalem.jpg" />
+	<script>
+		var ozellik=document.createAttribute("width");
+		var ozellik2=document.createAttribute("height");
+		ozellik.nodeValue="300";
+		ozellik2.nodeValue="50";
+		document.getElementById("resim1").setAttributeNode(ozellik);
+		document.getElementById("resim1").setAttributeNode(ozellik2);
+		document.getElementById("resim1").removeAttributeNode(document.getElementById("resim1").getAttributeNode("src"));
+		document.getElementById("resim1").removeAttributeNode(document.getElementById("resim1").getAttributeNode("width"));
+		alert(document.getElementById("resim1").getAttributeNode("width")); //null
+		alert(document.getElementById("resim1").getAttributeNode("src")); //null
+		alert(document.getElementById("resim1").getAttributeNode("height")); //[object Attr]
+	</script>
+)
+.childNodes => Elementin alt düðümlerini nodeList olarak getirir.
+(
+	#ÖR:
+	alert(document.getElementById("ornekDiv").childNodes.length);
+	alert(document.getElementById("ornekDiv").childNodes[0].nodeValue);
+	alert(document.getElementById("ornekDiv").childNodes[0].nodeName);
+	alert(document.getElementById("ornekDiv").childNodes[0].style.backgroundColor);
+	alert(document.getElementById("ornekDiv").childNodes[1].id);
+	alert(document.getElementById("ornekDiv").childNodes[1].nodeType); //1 ise ELEMENT_NODE, 2 ise ATTRIBUTE_NODE, 3 ise TEXT_NODE, 4 ise CDATA_SECTION_NODE, 
+	//5 ise ENTITY_REFERENCE_NODE, 6 ise ENTITY_NODE, 7 ise PROCESSING_INSTRUCTION_NODE, 8 ise COMMENT_NODE, 9 ise DOCUMENT_NODE, 10 ise DOCUMENT_TYPE_NODE,
+	//11 ise DOCUMENT_FRAGMENT_NODE, 12 ise NOTATION_NODE
+)
+.children => Sadece element olan alt düðümleri getirir.
+(
+	#ÖR:
+	<div id="ornekDiv">
+	Bilgi
+	<div id="birinciDiv">Div1</div>
+	Bilgi2
+	<a>Link1</a>
+	<p>Paragraf1</p>
+	<div>Div2</div>
+	<a>Link2</a>
+	</div>
+	<script>
+		alert(document.getElementById("ornekDiv").children.length); //5
+		alert(document.getElementById("ornekDiv").children[0].nodeName) //DIV
+		alert(document.getElementById("ornekDiv").children[0].nodeType) //1
+		alert(document.getElementById("ornekDiv").children[1].nodeName) //A
+		alert(document.getElementById("ornekDiv").children[2].nodeName) //P
+	</script>
+)
+.appendChild(eleman) => Elementin alt düðümlerinin sonuna yeni bir eleman eklemek için kullanýlýr.
+(
+	#ÖR:
+	<div id="OrnekKutu" style="width:200px; background-color:#bbddff;"><p>1. Paragraf</p></div>
+ 
+	<input type="button" value="Paragraf ekle" onClick="YeniParagraf()"/>
+
+	<script type="text/javascript">
+	function YeniParagraf()
+	{
+		var Toplam = document.getElementById('OrnekKutu').childNodes.length + 1;
+
+		var yeniParag = document.createElement('p'); // Yeni paragraf oluþturuluyor.
+      
+		yeniParag.innerHTML = Toplam + ". Paragraf";
+   
+		document.getElementById('OrnekKutu').appendChild(yeniParag);
+	}
+	</script>
+)
+.removeChild() => Elementin alt düðümlerinden birini silmek için kullanýlýr.
+(
+	#ÖR:
+	<body>
+	<script>
+	function f1(){
+		var div=document.getElementById("ornekDiv");
+		div.removeChild(div.firstChild); //Bilgi metni silinir.
+	}
+	</script>
+	<input type="button" value="Sil" onclick="f1()" />
+	<div id="ornekDiv">
+	Bilgi
+	<div id="birinciDiv">Div1</div>
+	Bilgi2
+	<a>Link1</a>
+	<p>Paragraf1</p>
+	<div>Div2</div>
+	<a>Link2</a>
+	</div>
+	</body>
+
+	ÖR2:
+	<body>
+	<script>
+	function f1(){
+		var div=document.getElementById("ornekDiv");
+		div.removeChild(div.firstChild.nextSibling); //Div1 silinir.
+	}
+	</script>
+	<input type="button" value="Sil" onclick="f1()" />
+	<div id="ornekDiv">
+	Bilgi
+	<div id="birinciDiv">Div1</div>
+	Bilgi2
+	<a>Link1</a>
+	<p>Paragraf1</p>
+	<div>Div2</div>
+	<a>Link2</a>
+	</div>
+	</body>
+
+	ÖR 3:
+	<body>
+	<script>
+	function f1(){
+		var div=document.getElementById("ornekDiv");
+		div.removeChild(div.childNodes[3]); //Link1 silinir.
+	}
+	</script>
+	<input type="button" value="Sil" onclick="f1()" />
+	<div id="ornekDiv">
+	Bilgi
+	<div id="birinciDiv">Div1</div>
+	Bilgi2
+	<a>Link1</a>
+	<p>Paragraf1</p>
+	<div>Div2</div>
+	<a>Link2</a>
+	</div>
+	</body>
+)
+.replaceChild() => Elementin bir alt düðümünü yenisi ile deðiþtirir.
+(
+	#ÖR:
+	<input type="button" value="Hücreyi deðiþtir" onClick="degistir()"/>
+	<table id="ornekTablo">
+		<tr id="ornekSatir">
+		<td id="H1">Hücre 1</td>
+		<td id="H2">Hücre 2</td>
+		<td id="H3">Hücre 3</td>
+		<td id="H4">Hücre 4</td>
+		</tr>
+	</table>
+
+	<script type="text/javascript">
+	function degistir()
+	{
+		var yeniHucre = document.createElement('td');
+		yeniHucre.innerHTML = 'Yeni Hücre';
+   
+		var Satir = document.getElementById('ornekSatir');
+		var degisecekHucre = document.getElementById('H3');
+		if(degisecekHucre != null)
+		{
+			Satir.replaceChild(yeniHucre, degisecekHucre);
+		}
+		else alert('Deðiþecek hücre bulunamadý!');
+	}
+	</script>
+)
+.insertBefore(yenielement,element) => createElement ile oluþturulmuþ elementi, ikinci parametredeki elementin öncesine ekler.
+(
+	#ÖR:
+	<input type="button" value="Ekle" onClick="Ekle()"/>
+	<table id="ornekTablo">
+	<tr id="ornekSatir">
+		<td id="ornekHucre1">Hücre-1</td>
+		<td id="ornekHucre2">Hücre-2</td>
+	</tr>
+	</table>
+
+	<script type="text/javascript">
+	function renkVer()
+	{
+		var rakam = parseInt( Math.random()*10 );
+		switch(rakam)
+  		{
+		case 0: return 'black';
+		case 1: return 'blue';
+		case 2: return 'red';
+		case 3: return 'yellow';
+		case 4: return 'green';
+		case 5: return 'silver';
+		case 6: return '#55FF77';
+		case 7: return '#AABBCC';
+		case 8: return '#AAEE99';
+		case 9: return '#008800';
+		}
+	}
+	function Ekle()
+	{
+		var yeniEleman = document.createElement('td');
+		var refEleman = document.getElementById('ornekHucre2');
+		var anaEleman = document.getElementById('ornekSatir');
+   
+		yeniEleman.style.backgroundColor = renkVer();   
+		yeniEleman.innerHTML = ' ';
+   
+		anaEleman.insertBefore( yeniEleman, refEleman );
+	}
+	</script>
+)
+.nextSibling => Bir sonraki node
+.previousSibling => Bir önceki node
+.firstChild => Elementin ilk alt düðümünü verir.
+.lastChild => Elementin son alt düðümünü verir.
+(
+	#ÖR:
+	<div id="AnaDiv" style="border: solid 1px black;">
+		<div id="AltDiv1">Ýçerik-1</div>
+		<div id="AltDiv2">Ýçerik-2</div>
+	</div>
+	<script type="text/javascript">
+	var IlkDugum = document.getElementById('AnaDiv').firstChild.nextSibling;
+	
+	document.write("Düðüm Kimlik : " + IlkDugum.id + "<br/>"); //AltDiv1
+	document.write("Düðüm Tipi : " + IlkDugum.nodeType + "<br/>"); //1
+	document.write("Düðüm Adý : " + IlkDugum.nodeName + "<br/>"); //DIV
+	document.write("Düðüm Deðeri : " + IlkDugum.nodeValue + "<br/>"); //null
+	document.write("Düðüm innerHTML : " + IlkDugum.innerHTML + "<br/>"); //Ýçerik-1
+	</script>
+)
+.firstElementChild => Altýndaki element olan ilk node(IE 9+)
+.lastElementChild => Altýndaki element olan son node(IE 9+)
+.nextElementSibling => Bir sonraki element olan komþu node(IE 9+)
+.previousElementSibling => Bir önceki element olan komþu node(IE 9+)
+.cloneNode() => Detaylý bilgi için : http://www.mynotlar.com/html_dom/element/clonenode.aspx
+.addEventListener() => Detaylý bilgi için : http://www.mynotlar.com/html_dom/element/addeventlistener.aspx(IE 9+)
+(
+	#Internet Explorer'in eski sürümleri için "attachEvent()" fonksiyonu kullanýlabilir.
+)
+.removeEventListener() => Bkz: http://www.mynotlar.com/html_dom/element/removeeventlistener.aspx(IE 9+)
+.attachEvent() => Herhangi bir olayýn dinlenerek, gerçekleþtiði zaman bir fonksiyonun çalýþtýrýlmasýný saðlar.(Sadece IE 10-)
+(
+	#ÖR:
+	function fonksiyon1(){
+		alert("fonksiyon1 çalýþtý");
+	}
+	var sonuc=document.getElementById("ornekDiv").attachEvent("onclick", fonksiyon1); //Olay dinleyicisi elemente baþarýlý bir þekilde eklenirse true, eklenemezse false döner.
+	alert(sonuc); //true
+	
+	#ÖR 2:
+	function fonksiyon1(olay){
+		alert("fonksiyon1 çalýþtý. Hedef :"+olay.srcElement.id); //ornekDiv
+		alert(olay.srcElement); //[object HTMLDivElement] veya [object]
+	}
+	var sonuc=document.getElementById("ornekDiv").attachEvent("onclick", fonksiyon1);
+)
+.detachEvent() => Elemente attachEvent() fonksiyonu ile eklenen olay dinleyicisinin silinmesini saðlar.(Sadece IE 10-)
+(
+	#Olay dinleyicisinin kaldýrýlmasý için, attachEvent() fonksiyonuna aktarýlan parametrelerin aynen detachEvent() fonksiyonuna aktarýlmasý gerekmektedir.
+	ÖR:
+	<input type="button" value="Dinleyici Ekle" onClick="listenerEkle()"/>
+	<input type="button" value="Dinleyici Sil" onClick="listenerSil()"/>
+	<br/><br/>
+	<div id="ornekDiv" style="width:120px; height:90px; background-color:#339933; color:white;">
+	Týkla Bana!
+	</div>
+
+	<script type="text/javascript">
+	var ornekDiv=document.getElementById("ornekDiv");
+	function listenerEkle()
+	{
+		ornekDiv.attachEvent("onmousedown", uyariGoster);
+	}
+	function listenerSil()
+	{
+		ornekDiv.detachEvent("onmousedown", uyariGoster);
+	}
+	function uyariGoster()
+	{
+		alert("Týklandý");
+	}
+	</script>
+)
+.scrollTop => Dikey kaydýrma çubuðunun üstten uzaklýðýný almak ya da deðiþtirmek için kullanýlýr. .scrollTop=number, .scrollTop+=number, .scrollTop-=number...
+(
+	#Kaydýrma çubuðuna uzaklýk olarak 0'dan küçük bir deðer verilirse scrollTop 0'a eþitlenir. Verilen deðerin maksimum deðerden büyük olmasý durumunda ise scrollTop maksimum deðere eþitlenir.
+)
+.scrollLeft => Yatay kaydýrma çubuðunun soldan uzaklýðýný almak ya da deðiþtirmek için kullanýlýr. scrollLeft=number, .scrollLeft+=number, .scrollLeft-=number...
+(
+	#Kaydýrma çubuðuna uzaklýk olarak 0'dan küçük bir deðer verilirse scrollLeft 0'a eþitlenir. Verilen deðerin maksimum deðerden büyük olmasý durumunda ise scrollLeft maksimum deðere eþitlenir.
+)
+.offsetWidth => Elementin geniþliðini verir. Geniþliðe sol ve sað padding ile sol ve sað border deðerleri eklenir.
+.offsetHeight => Elementin yüksekliðini verir. Yüksekliðe üst ve alt padding ile üst ve alt border deðerleri eklenir.
+.offsetLeft => Elementin ana element içinde soldan uzaklýðýný verir. NOT : Ýç ve dýþtaki elementlere position deðerleri verildiðinde sonuç deðiþiyor. (Test etmeden kullanma)
+.offsetTop => Elementin ana element içinde üstten uzaklýðýný verir. NOT : Ýç ve dýþtaki elementlere position deðerleri verildiðinde sonuç deðiþiyor. (Test etmeden kullanma)
